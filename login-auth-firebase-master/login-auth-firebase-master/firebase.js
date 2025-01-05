@@ -1,12 +1,12 @@
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCfAyb7INxl0u7Y9ha8VIT-gDqCybs_VI0",
-    authDomain: "trial-db-ee9d4.firebaseapp.com",
-    projectId: "trial-db-ee9d4",
-    storageBucket: "trial-db-ee9d4.appspot.com",
-    messagingSenderId: "440827449113",
-    appId: "1:440827449113:web:960ffdfc600ac9a1493f88",
-    measurementId: "G-GVC6NZV9GS"
+        apiKey: "AIzaSyDAlth1sxiP-S3r3fVDXhwadVVnEvpdO6s",
+        authDomain: "login-egi-agan.firebaseapp.com",
+        databaseURL: "https://login-egi-agan-default-rtdb.firebaseio.com",
+        projectId: "login-egi-agan",
+        storageBucket: "login-egi-agan.firebasestorage.app",
+        messagingSenderId: "395059466114",
+        appId: "1:395059466114:web:5c6b0621e9739df6b5c99b"
   };
 
   // Initialize Firebase
