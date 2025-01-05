@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+<h2>Register</h2>
+<form id="register-form">
+    <input type="email" id="register-email" placeholder="Email" required><br>
+    <input type="password" id="register-password" placeholder="Password" required><br>
+    <select id="register-role" required>
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+    </select><br>
+    <button type="submit">Register</button>
+</form>
+<p>Already have an account? <a href="index.html">Login</a></p>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+<script src="firebase-config.js"></script>
+<script src="register.js"></script>
+</body>
+</html>
