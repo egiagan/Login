@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Authentication with Firebase</title>
+</head>
+<body>
+
+    <div style="width:80%; margin:20% 40%;">
+        <label for="">First Name</label>
+        <input type="text" id="fname" placeholder="Enter your First Name"> <br> <br>
+        <label for="">Last Name</label>
+        <input type="text" id="lname" placeholder="Enter your Last Name"> <br> <br>
+        <label for="">Email</label>
+        <input type="email" id="email" placeholder="Enter your Email"> <br> <br>
+        <img style="max-width: 200px; border-radius: 5%;" id="preview" alt="Uploaded Image"> <br> <br>
+        <input type="file" id="image" alt="Profile_pic" placeholder="Upload your profile picture"><br> <br>
+        <button id="signup">Sign up with Google</button>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js"></script>    
+    <script src="https://www.gstatic.com/firebasejs/9.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js"></script>
+    
+    <script src="firebase.js"></script>
+
+    <script>
+
+        // js code to preview uploaded image
+        var img = document.getElementById('image');
+        var prev = document.getElementById('preview');
+        img.addEventListener('change',  function() {
+            prev.src =  URL.createObjectURL(this.files[0])
+        }, false);
+
+
+    </script>
+
+    
+</body>
+</html>
