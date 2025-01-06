@@ -101,39 +101,3 @@ function send_verification(){
 function myFunction_reload() {
     location.reload();
 }
-
-        usersRef.set(userData, function(error)
-        {
-            if(error)
-            {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-
-                console.log(errorCode);
-                onsole.log(errorMessage);
-
-                 window.alert("Message : " + errorMessage);
-            }
-            else
-            {
-                window.location.href = "index.html";
-            }
-        });
-    }
-    else
-    {
-        window.alert("Form is incomplete. Please fill out all fields.");
-    }
-  });
-
-
-function switchView(view)
-{
-    $.get({
-        url:view,
-        cache:false,
-    })
-    .then(function(data){
-        $("#container").html(data);
-    });
-}
