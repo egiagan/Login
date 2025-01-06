@@ -75,45 +75,11 @@ var firebaseConfig = {
       }
   });
 
-		
-	var user = firebase.auth().currentUser;
-
-    user.sendEmailVerification().then(function() {
-      // Email sent.
-      window.alert("Verification url sent.");
+	      window.alert("Verification url sent.");
      }).catch(function(error) {
       // An error happened.
       window.alert("Error "+ errorMessage);
      });
-
-
-	}else{
-		window.alert("Password and Confrom Password dose not Match");
-	}
-}
-
-function reg_account(){
-  document.getElementById("registration-div").style.display = "block";
-  document.getElementById("login-div").style.display = "none";
-  document.getElementById("send-verification-div").style.display = "none";
-}
-
-function send_verification(){
-
-	var user = firebase.auth().currentUser;
-
-    user.sendEmailVerification().then(function() {
-      // Email sent.
-      //window.alert("Verification url sent.");
-     }).catch(function(error) {
-      // An error happened.
-      window.alert("Error "+ errorMessage);
-     });
-}
-function myFunction_reload() {
-    location.reload();
-}
-
   $("#btn-resetPassword").click(function()
   {
      var auth = firebase.auth();
