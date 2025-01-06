@@ -41,64 +41,6 @@ var firebaseConfig = {
 
 
 
-  $("#btn-signup").click(function()
-  {
-      var email = $("#email").val();
-      var password = $("#password").val();
-      var cPassword = $("#confirmPassword").val();
-
-      if(email != ""  &&  password != ""  &&  cPassword != "")
-      {
-          if(password == cPassword)
-          {
-   		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-			  // Handle Errors here.
-			  var errorCode = error.code;
-			  var errorMessage = error.message;
-			  // ...
-			  window.alert("Error "+ errorMessage);
-			});
-		
-	var user = firebase.auth().currentUser;
-
-    user.sendEmailVerification().then(function() {
-      // Email sent.
-      window.alert("Verification url sent.");
-     }).catch(function(error) {
-      // An error happened.
-      window.alert("Error "+ errorMessage);
-     });
-
-
-	}else{
-		window.alert("Password and Confrom Password dose not Match");
-	}
-}
-
-function reg_account(){
-  document.getElementById("registration-div").style.display = "block";
-  document.getElementById("login-div").style.display = "none";
-  document.getElementById("send-verification-div").style.display = "none";
-}
-
-function send_verification(){
-
-	var user = firebase.auth().currentUser;
-
-    user.sendEmailVerification().then(function() {
-      // Email sent.
-      //window.alert("Verification url sent.");
-     }).catch(function(error) {
-      // An error happened.
-      window.alert("Error "+ errorMessage);
-     });
-}
-function myFunction_reload() {
-    location.reload();
-}
-
-
-
   $("#btn-resetPassword").click(function()
   {
      var auth = firebase.auth();
