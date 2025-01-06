@@ -74,7 +74,57 @@ var firebaseConfig = {
           window.alert("Form is incomplete. Please fill out all fields.");
       }
   });
+function registration(){
+	var user_email = document.getElementById("user_email").value;
+	var user_password = document.getElementById("user_password").value;
+	var confrom_password = document.getElementById("confrom_password").value;
+	if (user_password == confrom_password) {
 
+		firebase.auth().createUserWithEmailAndPassword(user_email, user_password).catch(function(error) {
+			  // Handle Errors here.
+			  var errorCode = error.code;
+			  var errorMessage = error.message;
+			  // ...
+			  window.alert("Error "+ errorMessage);
+			});
+		
+	var user = firebase.auth().currentUser;
+
+    user.sendEmailVerification().then(function() {
+      // Email sent.
+      window.alert("Verification url sent.");
+     }).catch(function(error) {
+      // An error happened.
+      window.alert("Error "+ errorMessage);
+     });
+
+
+	}else{
+		window.alert("Password and Confrom Password dose not Match");
+	}
+}
+
+function reg_account(){
+  document.getElementById("registration").style.display = "block";
+  document.getElementById("login").style.display = "none";
+  document.getElementById("send-verification-div").style.display = "none";
+}
+
+function send_verification(){
+
+	var user = firebase.auth().currentUser;
+
+    user.sendEmailVerification().then(function() {
+      // Email sent.
+      //window.alert("Verification url sent.");
+     }).catch(function(error) {
+      // An error happened.
+      window.alert("Error "+ errorMessage);
+     });
+}
+function myFunction_reload() {
+    location.reload();
+}
 
 
   $("#btn-resetPassword").click(function()
