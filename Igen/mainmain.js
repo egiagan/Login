@@ -112,7 +112,7 @@ function myFunction_reload() {
                 console.log(errorCode);
                 onsole.log(errorMessage);
 
-                window.alert("Message : " + errorMessage);
+                 window.alert("Message : " + errorMessage);
             }
             else
             {
@@ -127,7 +127,6 @@ function myFunction_reload() {
   });
 
 
-  }
 function switchView(view)
 {
     $.get({
