@@ -75,16 +75,7 @@ var firebaseConfig = {
       }
   });
 
-import { getAuth, verifyBeforeUpdateEmail } from "firebase/auth";
-const auth = getAuth();
-const user = auth.currentUser;
-verifyBeforeUpdateEmail(user, "newemail@example.com")
-.then(() => {
-console.log("Verification email sent.");
-})
-.catch((error) => {
-console.error("Error sending verification email: ", error);
-});
+
 
   $("#btn-resetPassword").click(function()
   {
