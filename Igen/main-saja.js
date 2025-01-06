@@ -63,22 +63,18 @@ var firebaseConfig = {
   
                 window.alert("Message : " + errorMessage);
             });
-function registration(){
-	var email = $("#email").value();
-	var password = $("#password").value();
-	var cPassword = $("#confirmPassword").value();
-	if (user_password == confrom_password) {
-
-if(email != ""  &&  password != ""  &&  cPassword != "")
+          }
+          else
+          {
+            window.alert("Password do not match with the Confirm Password.");
+          }
+      }
+      else
       {
-          if(password == cPassword)
-		firebase.auth().createUserWithEmailAndPassword(email, password, cPassword ).catch(function(error) {
-			  // Handle Errors here.
-			  var errorCode = error.code;
-			  var errorMessage = error.message;
-			  // ...
-			  window.alert("Error "+ errorMessage);
-			});
+          window.alert("Form is incomplete. Please fill out all fields.");
+      }
+  });
+
 		
 	var user = firebase.auth().currentUser;
 
@@ -97,9 +93,9 @@ if(email != ""  &&  password != ""  &&  cPassword != "")
 }
 
 function reg_account(){
-  document.getElementById("btn-login").style.display = "block";
-  document.getElementById("btn-signup").style.display = "none";
-  document.getElementById("send-verification").style.display = "none";
+  document.getElementById("registration-div").style.display = "block";
+  document.getElementById("login-div").style.display = "none";
+  document.getElementById("send-verification-div").style.display = "none";
 }
 
 function send_verification(){
@@ -117,9 +113,6 @@ function send_verification(){
 function myFunction_reload() {
     location.reload();
 }
-  });
-
-
 
   $("#btn-resetPassword").click(function()
   {
