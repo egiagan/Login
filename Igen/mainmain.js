@@ -127,6 +127,7 @@ function myFunction_reload() {
   });
 
 
+  }
 function switchView(view)
 {
     $.get({
