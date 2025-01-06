@@ -75,8 +75,7 @@ var firebaseConfig = {
       }
   });
 
-		
-	import { getAuth, verifyBeforeUpdateEmail } from "firebase/auth";
+import { getAuth, verifyBeforeUpdateEmail } from "firebase/auth";
 const auth = getAuth();
 const user = auth.currentUser;
 verifyBeforeUpdateEmail(user, "newemail@example.com")
