@@ -78,7 +78,7 @@ var firebaseConfig = {
 		
 	var user = firebase.auth().currentUser;
 
-    user.sendEmailVerification().then(function() {
+    user.createUserWithEmailAndPassword().then(function() {
       // Email sent.
       window.alert("Verification url sent.");
      }).catch(function(error) {
@@ -90,13 +90,6 @@ var firebaseConfig = {
 	}else{
 		window.alert("Password and Confrom Password dose not Match");
 	}
-}
-
-function reg_account(){
-  document.getElementById("registration-div").style.display = "block";
-  document.getElementById("login-div").style.display = "none";
-  document.getElementById("send-verification-div").style.display = "none";
-}
 
 function send_verification(){
 
