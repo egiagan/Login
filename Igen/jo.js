@@ -76,36 +76,16 @@ var firebaseConfig = {
   });
 
 		
-	var user = firebase.auth().currentUser;
-
-    user.createUserWithEmailAndPassword().then(function() {
-      // Email sent.
-      window.alert("Verification url sent.");
-     }).catch(function(error) {
-      // An error happened.
-      window.alert("Error "+ errorMessage);
-     });
-
-
-	}else{
-		window.alert("Password and Confrom Password dose not Match");
-	}
-
-function send_verification(){
-
-	var user = firebase.auth().currentUser;
-
-    user.sendEmailVerification().then(function() {
-      // Email sent.
-      //window.alert("Verification url sent.");
-     }).catch(function(error) {
-      // An error happened.
-      window.alert("Error "+ errorMessage);
-     });
-}
-function myFunction_reload() {
-    location.reload();
-}
+	import { getAuth, verifyBeforeUpdateEmail } from "firebase/auth";
+const auth = getAuth();
+const user = auth.currentUser;
+verifyBeforeUpdateEmail(user, "newemail@example.com")
+.then(() => {
+console.log("Verification email sent.");
+})
+.catch((error) => {
+console.error("Error sending verification email: ", error);
+});
 
   $("#btn-resetPassword").click(function()
   {
