@@ -44,15 +44,15 @@ var firebaseConfig = {
   $("#btn-signup").click(function()
   {
       var nama = $("#nama").val();
-      var nohp = $("#nohp").val();
+      var phone = $("#phone").val();
       var email = $("#email").val();
       var cPassword = $("#Password").val();
       var cPassword = $("#confirmPassword").val();
 
-      if(nama != ""  &&  nohp != ""  &&  email != ""  &&  Password != ""  &&  CPassword != "")
+      if(nama != ""  &&  phone != ""  &&  email != ""  &&  Password != ""  &&  CPassword != "")
       {
-          if(password == cPassword)
-          {
+           if(password != ""  &&  cPassword != "")
+                    {
             var result = firebase.auth().createUserWithEmailAndPassword(email, password); 
 
             result.catch(function(error)
@@ -120,8 +120,6 @@ var firebaseConfig = {
   $("#btn-update").click(function()
   {
     var phone = $("#phone").val();
-    var address = $("#address").val();
-    var bio = $("#bio").val();
     var fName = $("#firstName").val();
     var sName = $("#secondName").val();
     var country = $("#country").val();
@@ -136,7 +134,7 @@ var firebaseConfig = {
         var userData = 
         {
             "phone": phone,
-            "address": address,
+            "country": country,
             "firstName": fName,
             "secondName": sName,
             "gender": gender,
