@@ -1,0 +1,486 @@
+// Global variables
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let products = [
+    {
+        id: 1,
+        name: 'Smartphone Premium X1',
+        price: 8999000,
+        originalPrice: 10999000,
+        image: 'https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg',
+        category: 'smartphone',
+        description: 'Smartphone terbaru dengan fitur canggih dan kualitas build premium.',
+        rating: 4.8,
+        reviews: 256,
+        isNew: true,
+        isSale: true
+    },
+    {
+        id: 2,
+        name: 'Headphone Wireless Pro',
+        price: 2999000,
+        image: 'https://images.pexels.com/photos/3587478/pexels-photo-3587478.jpeg',
+        category: 'audio',
+        description: 'Headphone wireless premium dengan noise cancellation dan kualitas suara superior.',
+        rating: 4.6,
+        reviews: 184,
+        isNew: false,
+        isSale: false
+    },
+    {
+        id: 3,
+        name: 'Laptop Gaming Elite',
+        price: 12999000,
+        originalPrice: 14999000,
+        image: 'https://images.pexels.com/photos/2047905/pexels-photo-2047905.jpeg',
+        category: 'laptop',
+        description: 'Laptop gaming performa tinggi dengan grafis dan processing power terbaru.',
+        rating: 4.9,
+        reviews: 98,
+        isNew: false,
+        isSale: true
+    },
+    {
+        id: 4,
+        name: 'Smart Watch Series 5',
+        price: 3999000,
+        image: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg',
+        category: 'wearables',
+        description: 'Smartwatch canggih dengan monitoring kesehatan dan fitness tracking.',
+        rating: 4.7,
+        reviews: 312,
+        isNew: true,
+        isSale: false
+    },
+    {
+        id: 5,
+        name: 'Speaker Wireless Boom',
+        price: 1999000,
+        image: 'https://images.pexels.com/photos/1034653/pexels-photo-1034653.jpeg',
+        category: 'audio',
+        description: 'Speaker wireless portabel dengan suara powerful dan battery life panjang.',
+        rating: 4.5,
+        reviews: 167,
+        isNew: false,
+        isSale: false
+    },
+    {
+        id: 6,
+        name: 'Kamera DSLR Pro',
+        price: 7999000,
+        originalPrice: 9999000,
+        image: 'https://images.pexels.com/photos/51383/photo-camera-subject-photographer-51383.jpeg',
+        category: 'fotografi',
+        description: 'Kamera DSLR profesional dengan fitur canggih untuk photography enthusiast.',
+        rating: 4.8,
+        reviews: 89,
+        isNew: false,
+        isSale: true
+    }
+];
+
+let blogPosts = [
+    {
+        id: 1,
+        title: 'MEGA SALE: Diskon hingga 50%!',
+        excerpt: 'Jangan lewatkan penawaran terbesar tahun ini untuk produk elektronik premium.',
+        image: 'https://images.pexels.com/photos/1295572/pexels-photo-1295572.jpeg',
+        category: 'promo',
+        date: '2024-01-15',
+        author: 'Admin TechShop',
+        isPromo: true
+    },
+    {
+        id: 2,
+        title: '5 Smartphone Terbaru 2024',
+        excerpt: 'Review lengkap smartphone flagship terbaru yang wajib Anda ketahui.',
+        image: 'https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg',
+        category: 'review',
+        date: '2024-01-10',
+        author: 'Tech Reviewer'
+    },
+    {
+        id: 3,
+        title: 'Tips Memilih Laptop Gaming',
+        excerpt: 'Panduan lengkap memilih laptop gaming sesuai budget dan kebutuhan.',
+        image: 'https://images.pexels.com/photos/2047905/pexels-photo-2047905.jpeg',
+        category: 'tips',
+        date: '2024-01-08',
+        author: 'Gaming Expert'
+    },
+    {
+        id: 4,
+        title: 'Teknologi AI dalam Smartphone',
+        excerpt: 'Bagaimana AI mengubah cara kita menggunakan smartphone sehari-hari.',
+        image: 'https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg',
+        category: 'news',
+        date: '2024-01-05',
+        author: 'Tech Analyst'
+    }
+];
+
+// Utility functions
+function formatPrice(price) {
+    return 'Rp ' + price.toLocaleString('id-ID');
+}
+
+function generateStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(rating)) {
+            stars += '<i class="fas fa-star"></i>';
+        } else {
+            stars += '<i class="far fa-star"></i>';
+        }
+    }
+    return stars;
+}
+
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('id-ID', options);
+}
+
+// Cart functions
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    const existingItem = cart.find(item => item.id === productId);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+
+    updateCartUI();
+    saveCart();
+    showNotification('Produk berhasil ditambahkan ke keranjang!');
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    updateCartUI();
+    saveCart();
+    showNotification('Produk dihapus dari keranjang!', 'info');
+}
+
+function updateQuantity(productId, change) {
+    const item = cart.find(item => item.id === productId);
+    if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+            removeFromCart(productId);
+        } else {
+            updateCartUI();
+            saveCart();
+        }
+    }
+}
+
+function clearCart() {
+    if (confirm('Apakah Anda yakin ingin mengosongkan keranjang?')) {
+        cart = [];
+        updateCartUI();
+        saveCart();
+        showNotification('Keranjang berhasil dikosongkan!', 'info');
+    }
+}
+
+function updateCartUI() {
+    const cartCount = document.getElementById('cartCount');
+    if (cartCount) {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+    }
+
+    // Update cart page if we're on it
+    updateCartPage();
+}
+
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function loadCart() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCartUI();
+    }
+}
+
+// Product rendering functions
+function renderFeaturedProducts() {
+    const container = document.getElementById('featuredProducts');
+    if (!container) return;
+
+    const featuredProducts = products.slice(0, 6);
+    container.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
+}
+
+function createProductCard(product) {
+    return `
+        <div class="product-card fade-in">
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}">
+                ${product.isNew ? '<span class="product-badge badge-new">Baru</span>' : ''}
+                ${product.isSale ? '<span class="product-badge badge-sale">Sale</span>' : ''}
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">${product.name}</h3>
+                <div class="product-rating">
+                    <div class="stars">${generateStars(product.rating)}</div>
+                    <span class="rating-text">(${product.reviews})</span>
+                </div>
+                <p class="product-description">${product.description}</p>
+                <div class="product-price">
+                    <div>
+                        <span class="price-current">${formatPrice(product.price)}</span>
+                        ${product.originalPrice ? `<span class="price-original">${formatPrice(product.originalPrice)}</span>` : ''}
+                    </div>
+                    <span class="product-category">${product.category}</span>
+                </div>
+                <button class="add-to-cart" onclick="addToCart(${product.id})">
+                    <i class="fas fa-shopping-cart"></i> Tambah ke Keranjang
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Blog rendering functions
+function renderLatestPosts() {
+    const container = document.getElementById('latestPosts');
+    if (!container) return;
+
+    const latestPosts = blogPosts.slice(0, 3);
+    container.innerHTML = latestPosts.map(post => createBlogCard(post)).join('');
+}
+
+function createBlogCard(post) {
+    return `
+        <div class="post-card">
+            <img src="${post.image}" alt="${post.title}" class="post-image">
+            <div class="post-content">
+                <div class="post-meta">
+                    <span class="post-category ${post.category}">${post.category}</span>
+                    <span class="post-date">${formatDate(post.date)}</span>
+                </div>
+                <h3 class="post-title">
+                    <a href="post-${post.id}.html">${post.title}</a>
+                </h3>
+                <p class="post-excerpt">${post.excerpt}</p>
+                <a href="post-${post.id}.html" class="read-more">
+                    Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    `;
+}
+
+// Cart page functions
+function updateCartPage() {
+    const cartItemsList = document.getElementById('cartItemsList');
+    const cartEmpty = document.getElementById('cartEmpty');
+    const orderSummary = document.getElementById('orderSummary');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    if (!cartItemsList) return;
+
+    if (cart.length === 0) {
+        cartItemsList.style.display = 'none';
+        if (cartEmpty) cartEmpty.style.display = 'block';
+        if (orderSummary) orderSummary.innerHTML = '';
+        if (checkoutBtn) checkoutBtn.style.display = 'none';
+        return;
+    }
+
+    cartItemsList.style.display = 'block';
+    if (cartEmpty) cartEmpty.style.display = 'none';
+    if (checkoutBtn) checkoutBtn.style.display = 'block';
+
+    // Render cart items
+    cartItemsList.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="cart-item-info">
+                <div class="cart-item-title">${item.name}</div>
+                <div class="cart-item-price">${formatPrice(item.price)}</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                    <button class="quantity-btn" onclick="removeFromCart(${item.id})" style="margin-left: 1rem; color: #ef4444;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    // Calculate totals
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const shipping = subtotal > 5000000 ? 0 : 299000;
+    const tax = subtotal * 0.1;
+    const total = subtotal + shipping + tax;
+
+    // Render order summary
+    if (orderSummary) {
+        orderSummary.innerHTML = `
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span>${formatPrice(subtotal)}</span>
+            </div>
+            <div class="summary-row">
+                <span>Ongkir:</span>
+                <span>${shipping === 0 ? 'Gratis' : formatPrice(shipping)}</span>
+            </div>
+            <div class="summary-row">
+                <span>Pajak:</span>
+                <span>${formatPrice(tax)}</span>
+            </div>
+            <div class="summary-row summary-total">
+                <span>Total:</span>
+                <span>${formatPrice(total)}</span>
+            </div>
+        `;
+    }
+}
+
+// Notification system
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 3000;
+        animation: slideInRight 0.3s ease-out;
+        max-width: 300px;
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Newsletter subscription
+function subscribeNewsletter(event) {
+    event.preventDefault();
+    const email = event.target.querySelector('input[type="email"]').value;
+    showNotification('Terima kasih! Anda telah berlangganan newsletter kami.', 'success');
+    event.target.reset();
+}
+
+// Search functionality
+function initializeSearch() {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                const title = card.querySelector('.product-title').textContent.toLowerCase();
+                const description = card.querySelector('.product-description').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+}
+
+// Smooth scrolling for navigation links
+function initializeSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+// Mobile menu toggle
+function initializeMobileMenu() {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (mobileMenuBtn && navMenu) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+        });
+    }
+}
+
+// Promo code functionality
+function applyPromo() {
+    const promoInput = document.getElementById('promoInput');
+    if (!promoInput) return;
+    
+    const promoCode = promoInput.value.trim().toUpperCase();
+    
+    if (promoCode === 'SAVE10') {
+        showNotification('Kode promo berhasil diterapkan! Diskon 10%', 'success');
+        promoInput.value = '';
+        // Apply discount logic here
+    } else if (promoCode === '') {
+        showNotification('Masukkan kode promo terlebih dahulu', 'error');
+    } else {
+        showNotification('Kode promo tidak valid', 'error');
+    }
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    loadCart();
+    renderFeaturedProducts();
+    renderLatestPosts();
+    updateCartPage();
+    initializeSearch();
+    initializeSmoothScrolling();
+    initializeMobileMenu();
+    
+    // Add event listeners for newsletter forms
+    const newsletterForms = document.querySelectorAll('.newsletter-form');
+    newsletterForms.forEach(form => {
+        form.addEventListener('submit', subscribeNewsletter);
+    });
+});
+
+// Export functions for use in other files
+window.TechShop = {
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    showNotification,
+    subscribeNewsletter,
+    applyPromo,
+    formatPrice,
+    generateStars,
+    formatDate,
+    products,
+    blogPosts,
+    cart
+};
